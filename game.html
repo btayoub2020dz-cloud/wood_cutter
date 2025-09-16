@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة جمع الخشب - عمال متعددون</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        :root {
+            --bg-primary: #e6f2e6;
+            --bg-secondary: #d1e8d1;
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --container-border: #c8e6c8;
+            --text-primary: #2d4d2d;
+            --text-secondary: #4c7a4c;
+            --stat-bg: linear-gradient(to right, #e8f5e8, #d5ecd5);
+            --button-bg: linear-gradient(to bottom, #a5d6a5, #81c784);
+            --button-hover: linear-gradient(to bottom, #81c784, #66bb6a);
+            --button-disabled: linear-gradient(to bottom, #e0e0e0, #bdbdbd);
+            --upgrade-bg: linear-gradient(to bottom, #e8f5e9, #c8e6c9);
+            --upgrade-text: #2d4d2d;
+            --skill-bg: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+            --skill-border: #90caf9;
+            --skill-text: #0d47a1;
+            --skill-title: #1565c0;
+            --game-bg: linear-gradient(to bottom, #e0f2e0, #c8e6c8);
+            --game-border: #a5d6a5;
+            --ground-bg: linear-gradient(to bottom, #d7ccc8, #bcaaa4);
+            --ground-border: #a1887f;
+            --sky-bg: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+            --trunk-bg: linear-gradient(to right, #8d6e63, #6d4c41);
+            --leaves-bg: radial-gradient(circle, #81c784, #66bb6a);
+            --notification-bg: linear-gradient(to right, #81c784, #66bb6a);
+            --health-bg: linear-gradient(to right, #ef5350, #66bb6a);
+            --level-bg: linear-gradient(to right, #81c784, #4caf50);
+            --worker-bg: linear-gradient(to bottom, #ffb74d, #ff9800);
+            --premium-bg: linear-gradient(to bottom, #fff9c4, #fff176);
+            --premium-border: #ffd54f;
+            --premium-text: #5d4037;
+            --premium-title: #ff6f00;
+        }
+        
+        body.dark-mode {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --container-bg: rgba(30, 30, 46, 0.95);
+            --container-border: #4c4c6d;
+            --text-primary: #e6e6e6;
+            --text-secondary: #a5a5d8;
+            --stat-bg: linear-gradient(to right, #2d2d4d, #3d3d6b);
+            --button-bg: linear-gradient(to bottom, #4c4c6d, #3d3d6b);
+            --button-hover: linear-gradient(to bottom, #3d3d6b, #2d2d4d);
+            --button-disabled: linear-gradient(to bottom, #555555, #444444);
+            --upgrade-bg: linear-gradient(to bottom, #2d2d4d, #3d3d6b);
+            --upgrade-text: #e6e6e6;
+            --skill-bg: linear-gradient(to bottom, #2d2d4d, #3d3d6b);
+            --skill-border: #4c4c6d;
+            --skill-text: #a5a5d8;
+            --skill-title: #a5a5d8;
+            --game-bg: linear-gradient(to bottom, #2d2d4d, #3d3d6b);
+            --game-border: #4c4c6d;
+            --ground-bg: linear-gradient(to bottom, #4a4a4a, #3a3a3a);
+            --ground-border: #2a2a2a;
+            --sky-bg: linear-gradient(to bottom, #1a1a2e, #16213e);
+            --trunk-bg: linear-gradient(to right, #5d4037, #4e342e);
+            --leaves-bg: radial-gradient(circle, #2d4d2d, #1e3c26);
+            --notification-bg: linear-gradient(to right, #4c4c6d, #3d3d6b);
+            --health-bg: linear-gradient(to right, #ef5350, #66bb6a);
+            --level-bg: linear-gradient(to right, #4c4c6d, #3d3d6b);
+            --worker-bg: linear-gradient(to bottom, #ff9800, #f57c00);
+            --premium-bg: linear-gradient(to bottom, #5d4037, #4e342e);
+            --premium-border: #8d6e63;
+            --premium-text: #ffcc80;
+            --premium-title: #ffb74d;
+        }
+
+        body.desert-theme {
+            --bg-primary: #ffd700;
+            --bg-secondary: #ffb347;
+            --container-bg: rgba(255, 248, 225, 0.95);
+            --container-border: #e6b325;
+            --text-primary: #8b4513;
+            --text-secondary: #cd853f;
+            --stat-bg: linear-gradient(to right, #ffe4b5, #ffdead);
+            --button-bg: linear-gradient(to bottom, #daa520, #b8860b);
+            --button-hover: linear-gradient(to bottom, #b8860b, #8b6914);
+            --game-bg: linear-gradient(to bottom, #ffefd5, #ffe4b5);
+            --game-border: #daa520;
+            --ground-bg: linear-gradient(to bottom, #d2b48c, #bc8f5f);
+            --ground-border: #8b4513;
+            --sky-bg: linear-gradient(to bottom, #ffdab9, #ffe4b5);
+            --trunk-bg: linear-gradient(to right, #556b2f, #6b8e23);
+            --leaves-bg: radial-gradient(circle, #556b2f, #6b8e23);
+            --worker-bg: linear-gradient(to bottom, #cd853f, #a0522d);
+            --premium-bg: linear-gradient(to bottom, #fffacd, #fff68f);
+            --premium-border: #ffd700;
+            --premium-text: #8b4513;
+            --premium-title: #b8860b;
+            --upgrade-text: #8b4513;
+        }
+
+        body.winter-theme {
+            --bg-primary: #e0ffff;
+            --bg-secondary: #afeeee;
+            --container-bg: rgba(240, 255, 255, 0.95);
+            --container-border: #87ceeb;
+            --text-primary: #2f4f4f;
+            --text-secondary: #4682b4;
+            --stat-bg: linear-gradient(to right, #f0f8ff, #e0ffff);
+            --button-bg: linear-gradient(to bottom, #87cefa, #6495ed);
+            --button-hover: linear-gradient(to bottom, #6495ed, #4169e1);
+            --game-bg: linear-gradient(to bottom, #f0f8ff, #e6e6fa);
+            --game-border: #87ceeb;
+            --ground-bg: linear-gradient(to bottom, #f8f8ff, #e6e6fa);
+            --ground-border: #b0c4de;
+            --sky-bg: linear-gradient(to bottom, #e0ffff, #afeeee);
+            --trunk-bg: linear-gradient(to right, #8b4513, #654321);
+            --leaves-bg: radial-gradient(circle, #f0fff0, #f5fffa);
+            --worker-bg: linear-gradient(to bottom, #4682b4, #2f4f4f);
+            --premium-bg: linear-gradient(to bottom, #e6e6fa, #d8bfd8);
+            --premium-border: #9370db;
+            --premium-text: #2f4f4f;
+            --premium-title: #6a5acd;
+            --upgrade-text: #2f4f4f;
+        }
+
+        body.night-theme {
+            --bg-primary: #191970;
+            --bg-secondary: #000080;
+            --container-bg: rgba(25, 25, 112, 0.95);
+            --container-border: #483d8b;
+            --text-primary: #e6e6fa;
+            --text-secondary: #b0c4de;
+            --stat-bg: linear-gradient(to right, #483d8b, #6a5acd);
+            --button-bg: linear-gradient(to bottom, #9370db, #8a2be2);
+            --button-hover: linear-gradient(to bottom, #8a2be2, #6a5acd);
+            --game-bg: linear-gradient(to bottom, #000080, #191970);
+            --game-border: #483d8b;
+            --ground-bg: linear-gradient(to bottom, #2f4f4f, #2e8b57);
+            --ground-border: #2f4f4f;
+            --sky-bg: linear-gradient(to bottom, #00008b, #000080);
+            --trunk-bg: linear-gradient(to right, #2f4f4f, #228b22);
+            --leaves-bg: radial-gradient(circle, #32cd32, #228b22);
+            --worker-bg: linear-gradient(to bottom, #9370db, #8a2be2);
+            --premium-bg: linear-gradient(to bottom, #4b0082, #8a2be2);
+            --premium-border: #9370db;
+            --premium-text: #e6e6fa;
+            --premium-title: #da70d6;
+            --upgrade-text: #e6e6fa;
+        }
+
+        body.rgb-theme {
+            --bg-primary: #000000;
+            --bg-secondary: #1a1a1a;
+            --container-bg: rgba(30, 30, 30, 0.95);
+            --container-border: #ff00ff;
+            --text-primary: #ffffff;
+            --text-secondary: #00ffff;
+            --stat-bg: linear-gradient(to right, #ff0000, #00ff00, #0000ff);
+            --button-bg: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+            --button-hover: linear-gradient(to right, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            --game-bg: linear-gradient(to bottom, #000000, #1a1a1a);
+            --game-border: #00ffff;
+            --ground-bg: linear-gradient(to bottom, #330033, #660066);
+            --ground-border: #ff00ff;
+            --sky-bg: linear-gradient(to bottom, #000033, #000066);
+            --trunk-bg: linear-gradient(to right, #ff0000, #ffff00);
+            --leaves-bg: radial-gradient(circle, #00ff00, #00ffff);
+            --worker-bg: linear-gradient(to bottom, #ff00ff, #0000ff);
+            --premium-bg: linear-gradient(to right, #ff0000, #ffff00, #00ff00);
+            --premium-border: #00ffff;
+            --premium-text: #ffffff;
+            --premium-title: #ff00ff;
+            --upgrade-text: #ffffff;
+            --upgrade-bg: linear-gradient(to bottom, #0000ff, #ff00ff);
+        }
+        
+        body {
+            font-family: 'Tajawal', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: var(--container-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--container-border);
+            transition: all 0.3s ease;
+        }
+        
+        h1 {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-size: 2.2rem;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--container-border);
+        }
+        
+        h2 {
+            color: var(--text-secondary);
+            margin: 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--container-border);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            background: var(--stat-bg);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-item {
+            font-size: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 8px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .level-container {
+            margin: 15px 0;
+            padding: 10px;
+            background: var(--stat-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .level-bar {
+            width: 100%;
+            height: 25px;
+            background-color: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+        
+        .level-progress {
+            height: 100%;
+            width: 100%;
+            background: var(--level-bg);
+            border-radius: 12px;
+            transition: width 0.5s ease;
+        }
+        
+        .level-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+        
+        .game-area {
+            position: relative;
+            height: 350px;
+            background: var(--game-bg);
+            border-radius: 15px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--game-border);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--ground-bg);
+            border-top: 4px solid var(--ground-border);
+        }
+        
+        .sky {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: calc(100% - 70px);
+            background: var(--sky-bg);
+            z-index: 1;
+        }
+        
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+        
+        .cloud-1 {
+            width: 80px;
+            height: 30px;
+            top: 50px;
+            left: 20%;
+            animation: cloudMove 25s linear infinite;
+        }
+        
+        .cloud-2 {
+            width: 100px;
+            height: 40px;
+            top: 80px;
+            left: 60%;
+            animation: cloudMove 30s linear infinite;
+        }
+        
+        .cloud-3 {
+            width: 60px;
+            height: 25px;
+            top: 120px;
+            left: 40%;
+            animation: cloudMove 35s linear infinite;
+        }
+        
+        @keyframes cloudMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-500px); }
+        }
+        
+        .tree {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 250px;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .trunk {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
+            height: 180px;
+            background: var(--trunk-bg);
+            left: 20px;
+            border-radius: 5px;
+            border: 2px solid #5d4037;
+        }
+        
+        .leaves {
+            position: absolute;
+            bottom: 170px;
+            width: 180px;
+            height: 150px;
+            left: -40px;
+            background: var(--leaves-bg);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+            border: 3px solid #4caf50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cedar-tree .trunk {
+            width: 40px;
+            height: 150px;
+            left: 30px;
+            background: linear-gradient(to right, #8b4513, #654321);
+        }
+        
+        .cedar-tree .leaves {
+            bottom: 140px;
+            width: 160px;
+            height: 180px;
+            left: -30px;
+            background: radial-gradient(circle, #f0fff0, #f5fffa);
+            border-radius: 50% 50% 0 0;
+            border: 3px solid #87ceeb;
+        }
+        
+        .cactus {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 200px;
+            z-index: 2;
+        }
+        
+        .cactus-body {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
+            height: 160px;
+            background: linear-gradient(to right, #556b2f, #6b8e23);
+            left: 10px;
+            border-radius: 30px;
+            border: 2px solid #3d5228;
+        }
+        
+        .cactus-arm {
+            position: absolute;
+            background: linear-gradient(to right, #556b2f, #6b8e23);
+            border: 2px solid #3d5228;
+        }
+        
+        .cactus-arm-1 {
+            width: 40px;
+            height: 20px;
+            top: 60px;
+            right: -20px;
+            border-radius: 0 20px 20px 0;
+        }
+        
+        .cactus-arm-2 {
+            width: 30px;
+            height: 15px;
+            top: 100px;
+            left: -15px;
+            border-radius: 20px 0 0 20px;
+        }
+        
+        .health-bar {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 22px;
+            background-color: #f5f5f5;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+            z-index: 3;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .health-fill {
+            height: 100%;
+            width: 100%;
+            background: var(--health-bg);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .health-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-primary);
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-shadow: 0 0 2px white;
+        }
+        
+        .wood-animation {
+            position: absolute;
+            width: 30px;
+            height: 15px;
+            background: linear-gradient(to right, #8d6e63, #6d4c41);
+            border-radius: 3px;
+            opacity: 0;
+            transition: all 0.5s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .worker-icon {
+            position: absolute;
+            bottom: 75px;
+            width: 30px;
+            height: 30px;
+            background: var(--worker-bg);
+            border-radius: 50%;
+            z-index: 2;
+            animation: workerMove 3s infinite alternate;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes workerMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(20px); }
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: var(--button-hover);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        button:disabled {
+            background: var(--button-disabled);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            color: #9e9e9e;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--button-bg);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        .upgrades {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .upgrade {
+            background: var(--upgrade-bg);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--container-border);
+        }
+        
+        .upgrade p {
+            margin: 8px 0;
+            color: var(--upgrade-text);
+            font-weight: 600;
+        }
+        
+        .upgrade-title {
+            font-weight: bold;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .skill {
+            background: var(--skill-bg);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--skill-border);
+        }
+        
+        .skill p {
+            margin: 8px 0;
+            color: var(--skill-text);
+        }
+        
+        .skill-title {
+            font-weight: bold;
+            color: var(--skill-title);
+            font-size: 1.1rem;
+        }
+        
+        .skill.active {
+            border: 2px solid #4caf50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+        }
+        
+        .worker-stats {
+            margin-top: 15px;
+            padding: 10px;
+            background: var(--stat-bg);
+            border-radius: 10px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            background: var(--notification-bg);
+            color: white;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            font-weight: bold;
+            z-index: 1000;
+        }
+        
+        .level-up {
+            animation: levelUp 1s ease;
+        }
+        
+        @keyframes levelUp {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+        
+        .tree-shake {
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            25% { transform: translateX(-52%) rotate(-2deg); }
+            50% { transform: translateX(-48%) rotate(2deg); }
+            75% { transform: translateX(-52%) rotate(-1deg); }
+            100% { transform: translateX(-50%) rotate(0deg); }
+        }
+        
+        .premium-store {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--premium-bg);
+            border-radius: 15px;
+            border: 2px solid var(--premium-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-store h2 {
+            color: var(--premium-title);
+            border-bottom: 2px solid var(--premium-border);
+            padding-bottom: 10px;
+        }
+        
+        .premium-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .premium-item {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--premium-border);
+            color: var(--premium-text);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .premium-item.owned {
+            border: 2px solid #4caf50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .premium-item.active {
+            border: 2px solid #ff9800;
+            box-shadow: 0 0 20px rgba(255, 152, 0, 0.7);
+        }
+        
+        .premium-item-title {
+            font-weight: bold;
+            color: var(--premium-title);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .premium-item p {
+            margin: 8px 0;
+        }
+        
+        .premium-item button {
+            background: linear-gradient(to bottom, #ffb74d, #ff9800);
+            margin-top: 10px;
+        }
+        
+        .premium-item button:hover {
+            background: linear-gradient(to bottom, #ff9800, #f57c00);
+        }
+        
+        .premium-item button:disabled {
+            background: var(--button-disabled);
+            cursor: not-allowed;
+        }
+        
+        .activate-btn {
+            background: linear-gradient(to bottom, #4caf50, #2e7d32) !important;
+        }
+        
+        .activate-btn:hover {
+            background: linear-gradient(to bottom, #2e7d32, #1b5e20) !important;
+        }
+        
+        .deactivate-btn {
+            background: linear-gradient(to bottom, #f44336, #c62828) !important;
+        }
+        
+        .deactivate-btn:hover {
+            background: linear-gradient(to bottom, #c62828, #b71c1c) !important;
+        }
+        
+        .theme-preview {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid var(--premium-border);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .theme-preview-sky {
+            height: 50%;
+            width: 100%;
+        }
+        
+        .theme-preview-ground {
+            height: 50%;
+            width: 100%;
+        }
+        
+        .theme-preview-tree {
+            position: absolute;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 30px;
+            background: #8b4513;
+            border-radius: 3px;
+        }
+        
+        .theme-preview-tree::before {
+            content: '';
+            position: absolute;
+            bottom: 25px;
+            left: -15px;
+            width: 50px;
+            height: 30px;
+            background: #4caf50;
+            border-radius: 50%;
+        }
+        
+        .desert-sun {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background: #ff8c00;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ff4500;
+            animation: pulseSun 2s infinite alternate;
+        }
+        
+        .winter-snowflake {
+            position: absolute;
+            color: #b0e0e6;
+            font-size: 1.5rem;
+            animation: fall linear infinite;
+            z-index: 2;
+        }
+        
+        .night-star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+            z-index: 2;
+        }
+        
+        .rgb-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: float 5s infinite alternate;
+            z-index: 2;
+        }
+        
+        @keyframes pulseSun {
+            0% { transform: scale(1); box-shadow: 0 0 20px #ff4500; }
+            100% { transform: scale(1.1); box-shadow: 0 0 30px #ff4500; }
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(350px) rotate(360deg); opacity: 0; }
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-20px) translateX(10px); }
+        }
+
+        /* تحسينات ثيم RGB */
+        .rgb-theme .game-area {
+            animation: rgbBackgroundShift 10s infinite alternate;
+            background: linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 400% 400%;
+        }
+
+        .rgb-theme .sky {
+            animation: rgbSkyShift 15s infinite alternate;
+            background: linear-gradient(to bottom, #000033, #000066, #330033, #660066);
+            background-size: 400% 400%;
+        }
+
+        .rgb-theme .ground {
+            animation: rgbGroundShift 12s infinite alternate;
+            background: linear-gradient(to bottom, #330033, #660066, #000033, #000066);
+            background-size: 400% 400%;
+        }
+
+        .rgb-light-beam {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 0;
+            background: linear-gradient(to top, rgba(255, 0, 255, 0.8), transparent);
+            animation: rgbLightBeam 3s infinite alternate;
+            z-index: 1;
+        }
+
+        .rgb-tree {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 250px;
+            transition: all 0.3s ease;
+            z-index: 2;
+            animation: rgbTreeGlow 4s infinite alternate;
+        }
+
+        .rgb-trunk {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
+            height: 180px;
+            background: linear-gradient(to right, #ff0000, #ffff00);
+            left: 20px;
+            border-radius: 5px;
+            border: 2px solid #ffff00;
+            animation: rgbTrunkPulse 3s infinite alternate;
+        }
+
+        .rgb-leaves {
+            position: absolute;
+            bottom: 170px;
+            width: 180px;
+            height: 150px;
+            left: -40px;
+            background: radial-gradient(circle, #00ff00, #00ffff);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+            border: 3px solid #00ffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: rgbLeavesPulse 5s infinite alternate;
+        }
+
+        @keyframes rgbBackgroundShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @keyframes rgbSkyShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        @keyframes rgbGroundShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        @keyframes rgbFloat {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
+            100% { transform: translateY(-30px) translateX(20px) rotate(360deg); opacity: 0.8; }
+        }
+
+        @keyframes rgbLightBeam {
+            0% { height: 0; opacity: 0.3; }
+            100% { height: 200px; opacity: 0.7; }
+        }
+
+        @keyframes rgbTreeGlow {
+            0% { filter: drop-shadow(0 0 5px #ff00ff); }
+            50% { filter: drop-shadow(0 0 20px #00ffff); }
+            100% { filter: drop-shadow(0 0 10px #ffff00); }
+        }
+
+        @keyframes rgbTrunkPulse {
+            0% { background: linear-gradient(to right, #ff0000, #ffff00); }
+            50% { background: linear-gradient(to right, #ffff00, #ff0000); }
+            100% { background: linear-gradient(to right, #ff0000, #ffff00); }
+        }
+
+        @keyframes rgbLeavesPulse {
+            0% { 
+                background: radial-gradient(circle, #00ff00, #00ffff);
+                box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            }
+            50% { 
+                background: radial-gradient(circle, #00ffff, #00ff00);
+                box-shadow: 0 0 40px rgba(0, 255, 255, 1);
+            }
+            100% { 
+                background: radial-gradient(circle, #00ff00, #00ffff);
+                box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            }
+        }
+
+        .level-requirement {
+            color: #ff5555;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .upgrades, .skills, .premium-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">🌙</button>
+    
+    <div class="container">
+        <h1>🌲 لعبة جمع الخشب وبيعه 🌲</h1>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <span>النقود:</span>
+                <span class="stat-value" id="money">0</span> ذهب
+            </div>
+            <div class="stat-item">
+                <span>الخشب:</span>
+                <span class="stat-value" id="wood">0</span>
+            </div>
+            <div class="stat-item">
+                <span>القوة:</span>
+                <span class="stat-value" id="power">1</span>
+            </div>
+            <div class="stat-item">
+                <span>نقاط التطور:</span>
+                <span class="stat-value" id="skillPoints">0</span>
+            </div>
+            <div class="stat-item">
+                <span>عدد العمال:</span>
+                <span class="stat-value" id="workers">0</span>
+            </div>
+        </div>
+        
+        <div class="level-container">
+            <h3>المستوى: <span id="level">1</span></h3>
+            <div class="level-bar">
+                <div class="level-progress" id="levelProgress" style="width: 0%"></div>
+                <div class="level-text">XP: <span id="xp">0</span>/<span id="nextLevelXp">100</span></div>
+            </div>
+        </div>
+        
+        <div class="game-area" id="gameArea">
+            <div class="sky">
+                <div class="cloud cloud-1"></div>
+                <div class="cloud cloud-2"></div>
+                <div class="cloud cloud-3"></div>
+            </div>
+            <div class="ground"></div>
+            
+            <div class="health-bar">
+                <div class="health-fill" id="healthBar"></div>
+                <div class="health-text">صحة الشجرة: <span id="healthText">100</span>%</div>
+            </div>
+            
+            <div class="tree" id="tree">
+                <div class="trunk"></div>
+                <div class="leaves">شجرة الخشب</div>
+            </div>
+            
+            <div id="workersContainer"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="chopButton">⛏️ اضغط لجمع الخشب</button>
+            <button id="sellButton">💰 بيع الخشب (10 خشب = 8 ذهب)</button>
+        </div>
+        
+        <h2>ترقيات</h2>
+        <div class="upgrades">
+            <div class="upgrade">
+                <p class="upgrade-title">فأس أفضل</p>
+                <p>تزيد القوة +1</p>
+                <p>السعر: 15 ذهب</p>
+                <button id="upgradeAxe">شراء</button>
+            </div>
+            <div class="upgrade">
+                <p class="upgrade-title">عامل جديد</p>
+                <p>يجمع تلقائياً</p>
+                <p>السعر: <span id="workerPrice">50</span> ذهب</p>
+                <button id="hireWorker">توظيف</button>
+            </div>
+            <div class="upgrade">
+                <p class="upgrade-title">منشار كهربائي</p>
+                <p>يزيد القوة +5</p>
+                <p>السعر: 120 ذهب</p>
+                <button id="upgradeChainsaw">شراء</button>
+            </div>
+            <div class="upgrade">
+                <p class="upgrade-title">شاحنة نقل</p>
+                <p>تزيد سعر البيع +20%</p>
+                <p>السعر: 80 ذهب</p>
+                <button id="upgradeTruck">شراء</button>
+            </div>
+        </div>
+        
+        <div class="worker-stats">
+            <h3>إحصائيات العمال</h3>
+            <p>إجمالي الخشب الذي جمعه العمال: <span id="totalWorkerWood">0</span></p>
+            <p>إجمالي العمال: <span id="totalWorkers">0</span></p>
+        </div>
+        
+        <h2>المهارات الخاصة الدائمة</h2>
+        <div class="skills">
+            <div class="skill" id="skillPowerStrikeContainer">
+                <p class="skill-title">ضربة قوية دائمة</p>
+                <p>تزيد القوة الأساسية +2</p>
+                <p>التكلفة: 3 نقطة تطور</p>
+                <button id="skillPowerStrike">تعلم</button>
+            </div>
+            <div class="skill" id="skillDoubleHarvestContainer">
+                <p class="skill-title">حصاد دائم</p>
+                <p>تحصل على خشب مضاعف دائمًا</p>
+                <p>التكلفة: 4 نقطة تطور</p>
+                <button id="skillDoubleHarvest">تعلم</button>
+            </div>
+            <div class="skill" id="skillGoldenTouchContainer">
+                <p class="skill-title">لمسة ذهبية</p>
+                <p>تحصل على ذهب إضافي عند البيع</p>
+                <p>التكلفة: 5 نقطة تطور</p>
+                <button id="skillGoldenTouch">تعلم</button>
+            </div>
+            <div class="skill" id="skillEfficientWorkersContainer">
+                <p class="skill-title">عمال أكثر كفاءة</p>
+                <p>يزيد إنتاجية العمال +1</p>
+                <p>التكلفة: 4 نقطة تطور</p>
+                <button id="skillEfficientWorkers">تعلم</button>
+            </div>
+        </div>
+        
+        <div class="premium-store">
+            <h2>🏆 المتجر المميز - أشكال جديدة 🏆</h2>
+            
+            <div class="premium-items">
+                <div class="premium-item" id="desertThemeItem">
+                    <p class="premium-item-title">🌵 ثيم الصحراء</p>
+                    <div class="theme-preview">
+                        <div class="theme-preview-sky" style="background: linear-gradient(to bottom, #ffdab9, #ffe4b5);"></div>
+                        <div class="theme-preview-ground" style="background: linear-gradient(to bottom, #d2b48c, #bc8f5f);"></div>
+                        <div class="theme-preview-tree"></div>
+                    </div>
+                    <p>مظهر صحراوي مع صبار بدلاً من الشجرة</p>
+                    <p>السعر: 300 ذهب</p>
+                    <button id="buyDesertTheme">شراء</button>
+                </div>
+                <div class="premium-item" id="winterThemeItem">
+                    <p class="premium-item-title">❄️ ثيم الشتاء</p>
+                    <div class="theme-preview">
+                        <div class="theme-preview-sky" style="background: linear-gradient(to bottom, #e0ffff, #afeeee);"></div>
+                        <div class="theme-preview-ground" style="background: linear-gradient(to bottom, #f8f8ff, #e6e6fa);"></div>
+                        <div class="theme-preview-tree"></div>
+                    </div>
+                    <p>مظهر شتوي مع شجرة أرز بدلاً من الشجرة العادية</p>
+                    <p>السعر: 400 ذهب</p>
+                    <button id="buyWinterTheme">شراء</button>
+                </div>
+                <div class="premium-item" id="nightThemeItem">
+                    <p class="premium-item-title">🌙 ثيم الليل</p>
+                    <div class="theme-preview">
+                        <div class="theme-preview-sky" style="background: linear-gradient(to bottom, #00008b, #000080);"></div>
+                        <div class="theme-preview-ground" style="background: linear-gradient(to bottom, #2f4f4f, #2e8b57);"></div>
+                        <div class="theme-preview-tree"></div>
+                    </div>
+                    <p>مظهر ليلي جميل للعبة</p>
+                    <p>السعر: 500 ذهب</p>
+                    <button id="buyNightTheme">شراء</button>
+                </div>
+                <div class="premium-item" id="rgbThemeItem">
+                    <p class="premium-item-title">🌈 ثيم RGB</p>
+                    <div class="theme-preview">
+                        <div class="theme-preview-sky" style="background: linear-gradient(to bottom, #000033, #000066);"></div>
+                        <div class="theme-preview-ground" style="background: linear-gradient(to bottom, #330033, #660066);"></div>
+                        <div class="theme-preview-tree"></div>
+                    </div>
+                    <p>مظهر ملون بألوان قوس قزح</p>
+                    <p>السعر: <span id="rgbThemePrice">1000</span> ذهب</p>
+                    <p class="level-requirement">مطلوب المستوى 20</p>
+                    <button id="buyRgbTheme">شراء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // حالة اللعبة
+        const gameState = {
+            wood: 0,
+            money: 0,
+            basePower: 1,
+            power: 1,
+            treeHealth: 100,
+            maxTreeHealth: 100,
+            workers: 0,
+            workerPrice: 50,
+            workerEfficiency: 1,
+            totalWorkerWood: 0,
+            sellMultiplier: 0.8,
+            workerIntervals: [],
+            level: 1,
+            xp: 0,
+            nextLevelXp: 100,
+            skillPoints: 0,
+            skills: {
+                powerStrike: false,
+                doubleHarvest: false,
+                goldenTouch: false,
+                efficientWorkers: false
+            },
+            themes: {
+                desert: false,
+                winter: false,
+                night: false,
+                rgb: false
+            },
+            activeTheme: 'default',
+            darkMode: false,
+            rgbThemePrice: 1000,
+            rgbThemeLevelRequirement: 20
+        };
+        
+        // عناصر DOM
+        const woodElement = document.getElementById('wood');
+        const moneyElement = document.getElementById('money');
+        const powerElement = document.getElementById('power');
+        const skillPointsElement = document.getElementById('skillPoints');
+        const workersElement = document.getElementById('workers');
+        const workerPriceElement = document.getElementById('workerPrice');
+        const totalWorkerWoodElement = document.getElementById('totalWorkerWood');
+        const totalWorkersElement = document.getElementById('totalWorkers');
+        const levelElement = document.getElementById('level');
+        const xpElement = document.getElementById('xp');
+        const nextLevelXpElement = document.getElementById('nextLevelXp');
+        const levelProgressElement = document.getElementById('levelProgress');
+        const healthBar = document.getElementById('healthBar');
+        const healthText = document.getElementById('healthText');
+        const treeElement = document.getElementById('tree');
+        const workersContainer = document.getElementById('workersContainer');
+        const chopButton = document.getElementById('chopButton');
+        const sellButton = document.getElementById('sellButton');
+        const upgradeAxeButton = document.getElementById('upgradeAxe');
+        const hireWorkerButton = document.getElementById('hireWorker');
+        const upgradeChainsawButton = document.getElementById('upgradeChainsaw');
+        const upgradeTruckButton = document.getElementById('upgradeTruck');
+        const skillPowerStrikeButton = document.getElementById('skillPowerStrike');
+        const skillDoubleHarvestButton = document.getElementById('skillDoubleHarvest');
+        const skillGoldenTouchButton = document.getElementById('skillGoldenTouch');
+        const skillEfficientWorkersButton = document.getElementById('skillEfficientWorkers');
+        const notification = document.getElementById('notification');
+        const themeToggle = document.getElementById('themeToggle');
+        const buyDesertThemeButton = document.getElementById('buyDesertTheme');
+        const buyWinterThemeButton = document.getElementById('buyWinterTheme');
+        const buyNightThemeButton = document.getElementById('buyNightTheme');
+        const buyRgbThemeButton = document.getElementById('buyRgbTheme');
+        const desertThemeItem = document.getElementById('desertThemeItem');
+        const winterThemeItem = document.getElementById('winterThemeItem');
+        const nightThemeItem = document.getElementById('nightThemeItem');
+        const rgbThemeItem = document.getElementById('rgbThemeItem');
+        const gameArea = document.getElementById('gameArea');
+        const rgbThemePriceElement = document.getElementById('rgbThemePrice');
+        
+        // جمع الخشب
+        chopButton.addEventListener('click', chopWood);
+        
+        function chopWood() {
+            if (gameState.treeHealth <= 0) {
+                gameState.treeHealth = gameState.maxTreeHealth;
+                updateHealthBar();
+                showNotification("🌲 الشجرة قد تجددت! يمكنك الاستمرار في الجمع");
+                return;
+            }
+            
+            let damage = gameState.power * 2;
+            gameState.treeHealth -= damage;
+            if (gameState.treeHealth < 0) gameState.treeHealth = 0;
+            
+            updateHealthBar();
+            
+            let woodGained = gameState.power + Math.floor(Math.random() * 2);
+            
+            if (gameState.skills.doubleHarvest) {
+                woodGained *= 2;
+            }
+            
+            gameState.wood += woodGained;
+            
+            addXp(woodGained * 2);
+            
+            treeElement.classList.add('tree-shake');
+            setTimeout(() => {
+                treeElement.classList.remove('tree-shake');
+            }, 500);
+            
+            updateUI();
+            
+            showNotification(`+${woodGained} خشبة`);
+            
+            for (let i = 0; i < woodGained; i++) {
+                setTimeout(() => {
+                    const woodAnim = document.createElement('div');
+                    woodAnim.className = 'wood-animation';
+                    woodAnim.style.left = `${40 + Math.random() * 20}%`;
+                    woodAnim.style.bottom = '70px';
+                    woodAnim.style.opacity = '1';
+                    gameArea.appendChild(woodAnim);
+                    
+                    setTimeout(() => {
+                        woodAnim.style.bottom = '300px';
+                        woodAnim.style.opacity = '0';
+                        setTimeout(() => {
+                            gameArea.removeChild(woodAnim);
+                        }, 500);
+                    }, 100);
+                }, i * 150);
+            }
+            
+            if (gameState.treeHealth <= 0) {
+                setTimeout(() => {
+                    showNotification("🎉 لقد كسرت الشجرة وحصلت على مكافأة 20 خشبة و 50 XP!");
+                    gameState.wood += 20;
+                    addXp(50);
+                    updateUI();
+                    
+                    gameState.treeHealth = gameState.maxTreeHealth;
+                    updateHealthBar();
+                }, 1000);
+            }
+        }
+        
+        function addXp(amount) {
+            gameState.xp += amount;
+            
+            if (gameState.xp >= gameState.nextLevelXp) {
+                levelUp();
+            }
+            
+            const xpPercent = (gameState.xp / gameState.nextLevelXp) * 100;
+            levelProgressElement.style.width = `${xpPercent}%`;
+            xpElement.textContent = gameState.xp;
+        }
+        
+        function levelUp() {
+            gameState.level++;
+            gameState.xp = gameState.xp - gameState.nextLevelXp;
+            gameState.nextLevelXp = Math.floor(gameState.nextLevelXp * 1.5);
+            gameState.skillPoints++;
+            
+            notification.textContent = `🎊 LEVEL UP! أنت الآن مستوى ${gameState.level}! 🎊`;
+            notification.style.opacity = '1';
+            notification.classList.add('level-up');
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.classList.remove('level-up');
+            }, 3000);
+            
+            if (gameState.xp >= gameState.nextLevelXp) {
+                levelUp();
+            }
+            
+            updateUI();
+        }
+        
+        function updateHealthBar() {
+            const healthPercent = (gameState.treeHealth / gameState.maxTreeHealth) * 100;
+            healthBar.style.width = `${healthPercent}%`;
+            healthText.textContent = Math.round(healthPercent);
+        }
+        
+        sellButton.addEventListener('click', sellWood);
+        
+        function sellWood() {
+            if (gameState.wood >= 10) {
+                const woodToSell = Math.floor(gameState.wood / 10) * 10;
+                let moneyEarned = Math.floor(woodToSell * gameState.sellMultiplier);
+                
+                if (gameState.skills.goldenTouch) {
+                    moneyEarned = Math.floor(moneyEarned * 1.5);
+                }
+                
+                gameState.wood -= woodToSell;
+                gameState.money += moneyEarned;
+                
+                addXp(moneyEarned);
+                
+                updateUI();
+                showNotification(`لقد بعت ${woodToSell} خشبة وربحت ${moneyEarned} ذهب`);
+            } else {
+                showNotification('تحتاج إلى 10 قطع خشب على الأقل للبيع');
+            }
+        }
+        
+        upgradeAxeButton.addEventListener('click', upgradeAxe);
+        
+        function upgradeAxe() {
+            if (gameState.money >= 15) {
+                gameState.money -= 15;
+                gameState.basePower += 1;
+                updatePower();
+                
+                updateUI();
+                showNotification('⛏️ لقد قمت بترقية الفأس! القوة +1');
+            } else {
+                showNotification('لا تملك ما يكفي من الذهب للترقية');
+            }
+        }
+        
+        hireWorkerButton.addEventListener('click', hireWorker);
+        
+        function hireWorker() {
+            if (gameState.money >= gameState.workerPrice) {
+                gameState.money -= gameState.workerPrice;
+                gameState.workers++;
+                gameState.workerPrice = Math.floor(gameState.workerPrice * 1.5);
+                
+                const workerIcon = document.createElement('div');
+                workerIcon.className = 'worker-icon';
+                workerIcon.style.left = `${20 + (gameState.workers * 5)}%`;
+                workersContainer.appendChild(workerIcon);
+                
+                startWorker();
+                
+                updateUI();
+                showNotification(`👷 لقد وظفت عاملاً جديداً! الآن لديك ${gameState.workers} عمال`);
+            } else {
+                showNotification(`لا تملك ما يكفي من الذهب لتوظيف عامل (تحتاج ${gameState.workerPrice} ذهب)`);
+            }
+        }
+        
+        function startWorker() {
+            const interval = setInterval(() => {
+                if (gameState.treeHealth > 0) {
+                    let workerWood = gameState.workerEfficiency;
+                    
+                    if (gameState.skills.doubleHarvest) {
+                        workerWood *= 2;
+                    }
+                    
+                    gameState.wood += workerWood;
+                    gameState.totalWorkerWood += workerWood;
+                    gameState.treeHealth -= 1;
+                    addXp(workerWood * 2);
+                    updateHealthBar();
+                    updateUI();
+                    
+                    if (gameState.treeHealth <= 0) {
+                        setTimeout(() => {
+                            showNotification("🎉 العمال كسروا الشجرة وحصلوا على مكافأة 20 خشبة و 50 XP!");
+                            gameState.wood += 20;
+                            gameState.totalWorkerWood += 20;
+                            addXp(50);
+                            updateUI();
+                            
+                            gameState.treeHealth = gameState.maxTreeHealth;
+                            updateHealthBar();
+                        }, 1000);
+                    }
+                } else {
+                    gameState.treeHealth = gameState.maxTreeHealth;
+                    updateHealthBar();
+                }
+            }, 3000);
+            
+            gameState.workerIntervals.push(interval);
+        }
+        
+        upgradeChainsawButton.addEventListener('click', upgradeChainsaw);
+        
+        function upgradeChainsaw() {
+            if (gameState.money >= 120) {
+                gameState.money -= 120;
+                gameState.basePower += 5;
+                updatePower();
+                
+                updateUI();
+                showNotification('🔧 لقد اشتريت منشاراً كهربائياً! القوة +5');
+            } else {
+                showNotification('لا تملك ما يكفي من الذهب لهذه الترقية');
+            }
+        }
+        
+        upgradeTruckButton.addEventListener('click', upgradeTruck);
+        
+        function upgradeTruck() {
+            if (gameState.money >= 80) {
+                gameState.money -= 80;
+                gameState.sellMultiplier += 0.2;
+                
+                updateUI();
+                showNotification('🚚 لقد اشتريت شاحنة نقل! سعر البيع تحسن');
+            } else {
+                showNotification('لا تملك ما يكفي من الذهب لهذه الترقية');
+            }
+        }
+        
+        function updatePower() {
+            gameState.power = gameState.basePower;
+            if (gameState.skills.powerStrike) {
+                gameState.power += 2;
+            }
+            powerElement.textContent = gameState.power;
+        }
+        
+        skillPowerStrikeButton.addEventListener('click', activatePowerStrike);
+        
+        function activatePowerStrike() {
+            if (gameState.skillPoints >= 3 && !gameState.skills.powerStrike) {
+                gameState.skillPoints -= 3;
+                gameState.skills.powerStrike = true;
+                updatePower();
+                
+                document.getElementById('skillPowerStrikeContainer').classList.add('active');
+                updateUI();
+                showNotification('💥 تم تعلم الضربة القوية الدائمة! القوة +2 دائمًا');
+            } else if (gameState.skills.powerStrike) {
+                showNotification('لقد تعلمت هذه المهارة بالفعل');
+            } else {
+                showNotification('لا تملك نقاط تطور كافية لهذه المهارة');
+            }
+        }
+        
+        skillDoubleHarvestButton.addEventListener('click', activateDoubleHarvest);
+        
+        function activateDoubleHarvest() {
+            if (gameState.skillPoints >= 4 && !gameState.skills.doubleHarvest) {
+                gameState.skillPoints -= 4;
+                gameState.skills.doubleHarvest = true;
+                
+                document.getElementById('skillDoubleHarvestContainer').classList.add('active');
+                updateUI();
+                showNotification('✨ تم تعلم الحصاد الدائم! الخشب مضاعف دائمًا');
+            } else if (gameState.skills.doubleHarvest) {
+                showNotification('لقد تعلمت هذه المهارة بالفعل');
+            } else {
+                showNotification('لا تملك نقاط تطور كافية لهذه المهارة');
+            }
+        }
+        
+        skillGoldenTouchButton.addEventListener('click', activateGoldenTouch);
+        
+        function activateGoldenTouch() {
+            if (gameState.skillPoints >= 5 && !gameState.skills.goldenTouch) {
+                gameState.skillPoints -= 5;
+                gameState.skills.goldenTouch = true;
+                
+                document.getElementById('skillGoldenTouchContainer').classList.add('active');
+                updateUI();
+                showNotification('💰 تم تعلم اللمسة الذهبية! تحصل على ذهب إضافي عند البيع');
+            } else if (gameState.skills.goldenTouch) {
+                showNotification('لقد تعلمت هذه المهارة بالفعل');
+            } else {
+                showNotification('لا تملك نقاط تطور كافية لهذه المهارة');
+            }
+        }
+        
+        skillEfficientWorkersButton.addEventListener('click', activateEfficientWorkers);
+        
+        function activateEfficientWorkers() {
+            if (gameState.skillPoints >= 4 && !gameState.skills.efficientWorkers) {
+                gameState.skillPoints -= 4;
+                gameState.skills.efficientWorkers = true;
+                gameState.workerEfficiency += 1;
+                
+                document.getElementById('skillEfficientWorkersContainer').classList.add('active');
+                updateUI();
+                showNotification('⚡ تم تعلم عمال أكثر كفاءة! إنتاجية العمال +1');
+            } else if (gameState.skills.efficientWorkers) {
+                showNotification('لقد تعلمت هذه المهارة بالفعل');
+            } else {
+                showNotification('لا تملك نقاط تطور كافية لهذه المهارة');
+            }
+        }
+        
+        buyDesertThemeButton.addEventListener('click', buyDesertTheme);
+        
+        function buyDesertTheme() {
+            if (gameState.money >= 300 && !gameState.themes.desert) {
+                gameState.money -= 300;
+                gameState.themes.desert = true;
+                
+                desertThemeItem.classList.add('owned');
+                updateUI();
+                showNotification('🌵 لقد اشتريت ثيم الصحراء! يمكنك تفعيله من خلال النقر على العنصر');
+            } else if (gameState.themes.desert) {
+                activateTheme('desert');
+            } else {
+                showNotification('لا تملك ما يكفي من الذهب لشراء هذا الثيم');
+            }
+        }
+        
+        buyWinterThemeButton.addEventListener('click', buyWinterTheme);
+        
+        function buyWinterTheme() {
+            if (gameState.money >= 400 && !gameState.themes.winter) {
+                gameState.money -= 400;
+                gameState.themes.winter = true;
+                
+                winterThemeItem.classList.add('owned');
+                updateUI();
+                showNotification('❄️ لقد اشتريت ثيم الشتاء! يمكنك تفعيله من خلال النقر على العنصر');
+            } else if (gameState.themes.winter) {
+                activateTheme('winter');
+            } else {
+                showNotification('لا تملك ما يكفي من الذهب لشراء هذا الثيم');
+            }
+        }
+        
+        buyNightThemeButton.addEventListener('click', buyNightTheme);
+        
+        function buyNightTheme() {
+            if (gameState.money >= 500 && !gameState.themes.night) {
+                gameState.money -= 500;
+                gameState.themes.night = true;
+                
+                nightThemeItem.classList.add('owned');
+                updateUI();
+                showNotification('🌙 لقد اشتريت ثيم الليل! يمكنك تفعيله من خلال النقر على العنصر');
+            } else if (gameState.themes.night) {
+                activateTheme('night');
+            } else {
+                showNotification('لا تملك ما يكفي من الذهب لشراء هذا الثيم');
+            }
+        }
+        
+        buyRgbThemeButton.addEventListener('click', buyRgbTheme);
+        
+        function buyRgbTheme() {
+            const hasRequiredLevel = gameState.level >= gameState.rgbThemeLevelRequirement;
+            
+            if (!hasRequiredLevel) {
+                showNotification(`⚠️ تحتاج إلى المستوى ${gameState.rgbThemeLevelRequirement} لشراء ثيم RGB`);
+                return;
+            }
+            
+            if (gameState.money >= gameState.rgbThemePrice && !gameState.themes.rgb) {
+                gameState.money -= gameState.rgbThemePrice;
+                gameState.themes.rgb = true;
+                
+                rgbThemeItem.classList.add('owned');
+                updateUI();
+                showNotification('🌈 لقد اشتريت ثيم RGB! يمكنك تفعيله من خلال النقر على العنصر');
+            } else if (gameState.themes.rgb) {
+                activateTheme('rgb');
+            } else {
+                showNotification(`لا تملك ما يكفي من الذهب لشراء هذا الثيم (تحتاج ${gameState.rgbThemePrice} ذهب)`);
+            }
+        }
+        
+        function activateTheme(themeName) {
+            document.body.classList.remove('desert-theme', 'winter-theme', 'night-theme', 'rgb-theme', 'dark-mode');
+            
+            desertThemeItem.classList.remove('active');
+            winterThemeItem.classList.remove('active');
+            nightThemeItem.classList.remove('active');
+            rgbThemeItem.classList.remove('active');
+            
+            document.querySelectorAll('.desert-sun, .winter-snowflake, .night-star, .rgb-particle, .rgb-tree, .rgb-light-beam').forEach(el => el.remove());
+            
+            const treeElement = document.getElementById('tree');
+            treeElement.style.display = 'block';
+            treeElement.className = 'tree';
+            
+            const existingCactus = document.querySelector('.cactus');
+            if (existingCactus) {
+                existingCactus.remove();
+            }
+            
+            if (themeName !== 'default') {
+                document.body.classList.add(themeName + '-theme');
+                gameState.activeTheme = themeName;
+                
+                if (themeName === 'desert') {
+                    desertThemeItem.classList.add('active');
+                    addDesertElements();
+                    showCactus();
+                } else if (themeName === 'winter') {
+                    winterThemeItem.classList.add('active');
+                    addWinterElements();
+                    showCedarTree();
+                } else if (themeName === 'night') {
+                    nightThemeItem.classList.add('active');
+                    addNightElements();
+                } else if (themeName === 'rgb') {
+                    rgbThemeItem.classList.add('active');
+                    addRgbElements();
+                    showRgbTree();
+                }
+                
+                showNotification(`تم تفعيل ثيم ${themeName} بنجاح!`);
+            } else {
+                gameState.activeTheme = 'default';
+                showNotification('تم العودة إلى المظهر الافتراضي');
+            }
+            
+            themeToggle.textContent = gameState.darkMode ? '☀️' : '🌙';
+            updateUI();
+        }
+        
+        function showCactus() {
+            const treeElement = document.getElementById('tree');
+            treeElement.style.display = 'none';
+            
+            const cactus = document.createElement('div');
+            cactus.className = 'cactus';
+            cactus.innerHTML = `
+                <div class="cactus-body"></div>
+                <div class="cactus-arm cactus-arm-1"></div>
+                <div class="cactus-arm cactus-arm-2"></div>
+            `;
+            gameArea.appendChild(cactus);
+        }
+        
+        function showCedarTree() {
+            const treeElement = document.getElementById('tree');
+            treeElement.className = 'tree cedar-tree';
+        }
+        
+        function showRgbTree() {
+            const treeElement = document.getElementById('tree');
+            treeElement.style.display = 'none';
+            
+            const existingRgbTree = document.querySelector('.rgb-tree');
+            if (existingRgbTree) {
+                existingRgbTree.remove();
+            }
+            
+            const rgbTree = document.createElement('div');
+            rgbTree.className = 'rgb-tree';
+            rgbTree.innerHTML = `
+                <div class="rgb-trunk"></div>
+                <div class="rgb-leaves">شجرة RGB</div>
+                <div class="rgb-light-beam"></div>
+            `;
+            gameArea.appendChild(rgbTree);
+        }
+        
+        function addDesertElements() {
+            const sun = document.createElement('div');
+            sun.className = 'desert-sun';
+            gameArea.appendChild(sun);
+        }
+        
+        function addWinterElements() {
+            for (let i = 0; i < 15; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'winter-snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = `${Math.random() * 100}%`;
+                snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                gameArea.appendChild(snowflake);
+            }
+        }
+        
+        function addNightElements() {
+            for (let i = 0; i < 30; i++) {
+                const star = document.createElement('div');
+                star.className = 'night-star';
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.top = `${Math.random() * 50}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                gameArea.appendChild(star);
+            }
+        }
+        
+        function addRgbElements() {
+            const colors = ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff'];
+            
+            // إزالة الجسيمات القديمة إذا existed
+            document.querySelectorAll('.rgb-particle').forEach(el => el.remove());
+            
+            // إضافة جسيمات جديدة
+            for (let i = 0; i < 80; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'rgb-particle';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.width = `${Math.random() * 8 + 4}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 4 + 3}s`;
+                particle.style.animationDelay = `${Math.random() * 2}s`;
+                gameArea.appendChild(particle);
+            }
+            
+            // إضافة أشعة ضوئية إضافية
+            for (let i = 0; i < 3; i++) {
+                const lightBeam = document.createElement('div');
+                lightBeam.className = 'rgb-light-beam';
+                lightBeam.style.left = `${20 + i * 30}%`;
+                lightBeam.style.animationDelay = `${i * 0.5}s`;
+                gameArea.appendChild(lightBeam);
+            }
+        }
+        
+        desertThemeItem.addEventListener('click', () => {
+            if (gameState.themes.desert) {
+                if (gameState.activeTheme === 'desert') {
+                    activateTheme('default');
+                } else {
+                    activateTheme('desert');
+                }
+            }
+        });
+        
+        winterThemeItem.addEventListener('click', () => {
+            if (gameState.themes.winter) {
+                if (gameState.activeTheme === 'winter') {
+                    activateTheme('default');
+                } else {
+                    activateTheme('winter');
+                }
+            }
+        });
+        
+        nightThemeItem.addEventListener('click', () => {
+            if (gameState.themes.night) {
+                if (gameState.activeTheme === 'night') {
+                    activateTheme('default');
+                } else {
+                    activateTheme('night');
+                }
+            }
+        });
+        
+        rgbThemeItem.addEventListener('click', () => {
+            if (gameState.themes.rgb) {
+                if (gameState.activeTheme === 'rgb') {
+                    activateTheme('default');
+                } else {
+                    activateTheme('rgb');
+                }
+            }
+        });
+        
+        themeToggle.addEventListener('click', toggleDarkMode);
+        
+        function toggleDarkMode() {
+            if (gameState.activeTheme !== 'default') {
+                activateTheme('default');
+            } else {
+                gameState.darkMode = !gameState.darkMode;
+                if (gameState.darkMode) {
+                    document.body.classList.add('dark-mode');
+                    themeToggle.textContent = '☀️';
+                    showNotification('تم تفعيل الوضع المظلم');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    themeToggle.textContent = '🌙';
+                    showNotification('تم تعطيل الوضع المظلم');
+                }
+            }
+        }
+        
+        function updateUI() {
+            woodElement.textContent = gameState.wood;
+            moneyElement.textContent = gameState.money;
+            powerElement.textContent = gameState.power;
+            skillPointsElement.textContent = gameState.skillPoints;
+            workersElement.textContent = gameState.workers;
+            workerPriceElement.textContent = gameState.workerPrice;
+            totalWorkerWoodElement.textContent = gameState.totalWorkerWood;
+            totalWorkersElement.textContent = gameState.workers;
+            levelElement.textContent = gameState.level;
+            xpElement.textContent = gameState.xp;
+            nextLevelXpElement.textContent = gameState.nextLevelXp;
+            rgbThemePriceElement.textContent = gameState.rgbThemePrice;
+            
+            const xpPercent = (gameState.xp / gameState.nextLevelXp) * 100;
+            levelProgressElement.style.width = `${xpPercent}%`;
+            
+            sellButton.disabled = gameState.wood < 10;
+            upgradeAxeButton.disabled = gameState.money < 15;
+            hireWorkerButton.disabled = gameState.money < gameState.workerPrice;
+            upgradeChainsawButton.disabled = gameState.money < 120;
+            upgradeTruckButton.disabled = gameState.money < 80;
+            
+            skillPowerStrikeButton.disabled = gameState.skillPoints < 3 || gameState.skills.powerStrike;
+            skillDoubleHarvestButton.disabled = gameState.skillPoints < 4 || gameState.skills.doubleHarvest;
+            skillGoldenTouchButton.disabled = gameState.skillPoints < 5 || gameState.skills.goldenTouch;
+            skillEfficientWorkersButton.disabled = gameState.skillPoints < 4 || gameState.skills.efficientWorkers;
+            
+            buyDesertThemeButton.disabled = gameState.money < 300 && !gameState.themes.desert;
+            buyWinterThemeButton.disabled = gameState.money < 400 && !gameState.themes.winter;
+            buyNightThemeButton.disabled = gameState.money < 500 && !gameState.themes.night;
+            
+            // تحديث حالة زر شراء ثيم RGB بناءً على المستوى والمال
+            const hasRequiredLevel = gameState.level >= gameState.rgbThemeLevelRequirement;
+            buyRgbThemeButton.disabled = (gameState.money < gameState.rgbThemePrice && !gameState.themes.rgb) || !hasRequiredLevel;
+            
+            // إظهار/إخفاء متطلبات المستوى لثيم RGB
+            const levelRequirementElement = document.querySelector('#rgbThemeItem .level-requirement');
+            if (levelRequirementElement) {
+                if (!hasRequiredLevel && !gameState.themes.rgb) {
+                    levelRequirementElement.style.display = 'block';
+                } else {
+                    levelRequirementElement.style.display = 'none';
+                }
+            }
+            
+            if (gameState.themes.desert) {
+                if (gameState.activeTheme === 'desert') {
+                    buyDesertThemeButton.textContent = 'إلغاء التفعيل';
+                    buyDesertThemeButton.className = 'deactivate-btn';
+                } else {
+                    buyDesertThemeButton.textContent = 'تفعيل';
+                    buyDesertThemeButton.className = 'activate-btn';
+                }
+                desertThemeItem.classList.add('owned');
+            } else {
+                buyDesertThemeButton.textContent = 'شراء';
+                buyDesertThemeButton.className = '';
+            }
+            
+            if (gameState.themes.winter) {
+                if (gameState.activeTheme === 'winter') {
+                    buyWinterThemeButton.textContent = 'إلغاء التفعيل';
+                    buyWinterThemeButton.className = 'deactivate-btn';
+                } else {
+                    buyWinterThemeButton.textContent = 'تفعيل';
+                    buyWinterThemeButton.className = 'activate-btn';
+                }
+                winterThemeItem.classList.add('owned');
+            } else {
+                buyWinterThemeButton.textContent = 'شراء';
+                buyWinterThemeButton.className = '';
+            }
+            
+            if (gameState.themes.night) {
+                if (gameState.activeTheme === 'night') {
+                    buyNightThemeButton.textContent = 'إلغاء التفعيل';
+                    buyNightThemeButton.className = 'deactivate-btn';
+                } else {
+                    buyNightThemeButton.textContent = 'تفعيل';
+                    buyNightThemeButton.className = 'activate-btn';
+                }
+                nightThemeItem.classList.add('owned');
+            } else {
+                buyNightThemeButton.textContent = 'شراء';
+                buyNightThemeButton.className = '';
+            }
+            
+            if (gameState.themes.rgb) {
+                if (gameState.activeTheme === 'rgb') {
+                    buyRgbThemeButton.textContent = 'إلغاء التفعيل';
+                    buyRgbThemeButton.className = 'deactivate-btn';
+                } else {
+                    buyRgbThemeButton.textContent = 'تفعيل';
+                    buyRgbThemeButton.className = 'activate-btn';
+                }
+                rgbThemeItem.classList.add('owned');
+            } else {
+                buyRgbThemeButton.textContent = 'شراء';
+                buyRgbThemeButton.className = '';
+            }
+            
+            if (gameState.activeTheme === 'desert') {
+                desertThemeItem.classList.add('active');
+            } else if (gameState.activeTheme === 'winter') {
+                winterThemeItem.classList.add('active');
+            } else if (gameState.activeTheme === 'night') {
+                nightThemeItem.classList.add('active');
+            } else if (gameState.activeTheme === 'rgb') {
+                rgbThemeItem.classList.add('active');
+            }
+            
+            if (gameState.skills.powerStrike) {
+                skillPowerStrikeButton.textContent = 'مكتسبة';
+            }
+            if (gameState.skills.doubleHarvest) {
+                skillDoubleHarvestButton.textContent = 'مكتسبة';
+            }
+            if (gameState.skills.goldenTouch) {
+                skillGoldenTouchButton.textContent = 'مكتسبة';
+            }
+            if (gameState.skills.efficientWorkers) {
+                skillEfficientWorkersButton.textContent = 'مكتسبة';
+            }
+        }
+        
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.style.opacity = '1';
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+            }, 3000);
+        }
+        
+        updateUI();
+        updateHealthBar();
+    </script>
+</body>
+</html>
